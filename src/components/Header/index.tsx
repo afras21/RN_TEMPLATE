@@ -2,29 +2,25 @@ import React from 'react';
 import { View, DimensionValue, Text, StyleSheet } from 'react-native';
 
 type Props = {
-    height?: DimensionValue;
-    width?: DimensionValue;
     title: string
 };
 
-const Header = ({ height, width, title }: Props) => {
+const Header = ({ title }: Props) => {
 
     return (
-        <View testID={''} style={[styles.root, { height, width }]}>
+        <View testID={''} style={styles.root}>
             <Text style={styles.titleStyle}>{title}</Text>
         </View>
     );
 };
 
 Header.defaultProps = {
-    height: 200,
-    width: 200,
-    mode: 'contain',
+    title: 'Home',
 };
 
 const styles = StyleSheet.create({
     root: {
-        padding: 15
+        padding: 15,
     },
     titleStyle: {
         fontWeight: 'bold',

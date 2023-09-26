@@ -1,36 +1,121 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     ActivityIndicator,
-    Text,
-    TouchableOpacity,
-    ScrollView,
-    Image,
-    Alert,
+    StyleSheet,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { Brand, Header } from '../../components';
-import { useTheme } from '../../hooks';
-import { changeTheme, ThemeState } from '../../store/theme';
-import i18next from 'i18next';
+import { Header } from '../../components';
+import { UserList, UserType } from './components';
+import SearchBar from '@/components/SearchBar';
+
+export const listZellerCustomers = {
+    items: [
+        {
+            id: '1',
+            name: 'TestCustomer1',
+            email: 'test1@test.com',
+            role: 'Manager'
+        },
+        {
+            id: '2',
+            name: 'TestCustomer2',
+            email: 'test2@test.com',
+            role: 'Admin'
+        },
+        {
+            id: '3',
+            name: 'TestCustomer3',
+            email: 'test3@test.com',
+            role: 'Manager'
+        },
+        {
+            id: '4',
+            name: 'TestCustomer4',
+            email: 'test4@test.com',
+            role: 'Admin'
+        }
+    ],
+    nextToken: null
+};
+
+export const userTypes = {
+    items: [
+        {
+            id: '1',
+            name: 'Admin',
+            label: 'Admin'
+        },
+        {
+            id: '2',
+            name: 'Manager',
+            label: 'Manager'
+        }
+    ]
+}
+
+type UserTypes = {
+    id: string,
+    name: string,
+    label: string
+}
+type User = {
+    id: string,
+    name: string,
+    email: string,
+    role: string
+}
 
 const Home = () => {
-    const {
-        Common,
-        Fonts,
-        Gutters,
-        Layout,
-        Images,
-        darkMode: isDark,
-    } = useTheme();
-    const dispatch = useDispatch();
+    const [selectedUserType, setSelectedUserType] = useState<UserTypes>({});
+    const [usersData, setUsersData] = useState<Array<User>>([]);
+    const [isLoading, setLoading] = useState<boolean>(true);
+    const [searchKey, setSearchKey] = useState<string>('');
 
-    const onChangeTheme = ({ theme, darkMode }: Partial<ThemeState>) => {
-        dispatch(changeTheme({ theme, darkMode }));
+    useEffect(() => {
+        setSelectedUserType(userTypes.items[0]);
+        setUsersData(listZellerCustomers.items);
+        setLoading(false);
+    }, [])
+
+    const onSelectUserType = (data: any) => {
+        setSelectedUserType(data)
+        getFilteredData();
     };
 
+    const onSearchTextChange = (text: string) => {
+        setSearchKey(text?.toLocaleLowerCase() ?? '');
+    }
+
+    const getFilteredData = () => {
+        if (usersData?.length > 0) {
+            const filteredPayload = usersData.filter(user => user.role == selectedUserType.name);
+            if (filteredPayload?.length > 0 && searchKey?.length) {
+                return filteredPayload.filter(user => user?.name?.toLocaleLowerCase().includes(searchKey) || user?.email.includes(searchKey))
+            }
+            return filteredPayload
+        }
+    }
+
+    if (isLoading) {
+        return <ActivityIndicator />
+    }
+
     return (
-        <Header title='Dashboard' />
+        <View>
+            <Header title='Dashboard' />
+            <SearchBar onChange={onSearchTextChange} />
+            <UserType
+                onChange={onSelectUserType}
+                userTypes={userTypes.items}
+                selectedId={selectedUserType.id}
+            />
+            <UserList
+                title={selectedUserType?.label} // filter based on applied filter
+                userList={getFilteredData()}
+                onChange={() => { }}
+            />
+        </View>
+
     );
 };
 
