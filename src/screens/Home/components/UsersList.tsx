@@ -24,7 +24,7 @@ const UserList = ({
         <View
             key={`__user_card__${index}__`}
             style={{ flexDirection: 'row', paddingVertical: 10, marginVertical: 5 }}>
-            <Avatar title='T' />
+            <Avatar title={String(item?.name).charAt(0)} />
             <View style={{ marginHorizontal: 15, justifyContent: 'center', width: '70%' }}>
                 <Text numberOfLines={1} style={{ fontSize: 18 }}>{item?.name}</Text>
                 <Text numberOfLines={1} style={{ fontSize: 15, color: '#7d7e80', lineHeight: 25 }}>{item?.role}</Text>
