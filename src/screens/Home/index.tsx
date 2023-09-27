@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
     View,
     ActivityIndicator,
@@ -7,6 +7,7 @@ import {
 import { Header } from '../../components';
 import { UserList, UserType } from './components';
 import SearchBar from '@/components/SearchBar';
+import { gql, useQuery } from "@apollo/client";
 
 export const listZellerCustomers = {
     items: [
@@ -67,18 +68,32 @@ type User = {
 
 const Home = () => {
     const [selectedUserType, setSelectedUserType] = useState<UserTypes>({});
-    const [usersData, setUsersData] = useState<Array<User>>([]);
-    const [isLoading, setLoading] = useState<boolean>(true);
     const [searchKey, setSearchKey] = useState<string>('');
+
+    const fetchUsersQuery = gql(`query ExampleQuery($getZellerCustomerId: String!) {
+        getZellerCustomer(id: $getZellerCustomerId) {
+          id, name, role
+        }
+        listZellerCustomers {
+          items {
+            id, name, role, email
+          }
+        }
+      }`)
+    const { loading, error, data } = useQuery(fetchUsersQuery, { variables: { "getZellerCustomerId": "1" } });
+    console.log('---QUER DATA--', data?.listZellerCustomers.items);
+    const usersData = useMemo(() => {
+        return data?.listZellerCustomers?.items
+    }, [data])
 
     useEffect(() => {
         setSelectedUserType(userTypes.items[0]);
-        setUsersData(listZellerCustomers.items);
-        setLoading(false);
-    }, [])
+        // setUsersData(listZellerCustomers.items);
+
+
+    }, []);
 
     const onSelectUserType = (index: number) => {
-        console.log('-----SELECT USER TYPE------', index)
         setSelectedUserType(userTypes.items[index - 1])
         getFilteredData();
     };
@@ -89,7 +104,6 @@ const Home = () => {
 
     const getFilteredData = () => {
         var filteredPayload: Array<User> | [] = [];
-        console.log('\n\n\n---UPDATINT-------', usersData)
         if (usersData?.length > 0) {
             filteredPayload = usersData.filter(user => user.role == selectedUserType.name);
 
@@ -100,7 +114,7 @@ const Home = () => {
         return filteredPayload
     }
 
-    if (isLoading) {
+    if (loading) {
         return <ActivityIndicator />
     }
 
