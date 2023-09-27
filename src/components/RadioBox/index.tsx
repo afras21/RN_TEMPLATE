@@ -6,7 +6,7 @@ import RadioGroup from 'react-native-radio-buttons-group';
 type Props = {
     values: Array<any>
     selectedId: string
-    onChange: () => {}
+    onChange: (index: number) => void
 }
 
 const RadioBox = ({ selectedId, onChange, values }: Props) => {

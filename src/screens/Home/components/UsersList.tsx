@@ -5,7 +5,6 @@ import { View, Text, StyleSheet, FlatList } from 'react-native'
 type Props = {
     title?: string;
     userList: object;
-    onChange: () => void;
 };
 
 /**
@@ -16,8 +15,7 @@ type Props = {
 
 const UserList = ({
     title = 'Users',
-    userList = [],
-    onChange
+    userList = []
 }: Props) => {
 
     const renderItem = ({ item, index }: { item: any, index: number }) => (

@@ -89,10 +89,10 @@ const Home = () => {
 
     const getFilteredData = () => {
         var filteredPayload: Array<User> | [] = [];
-        console.log('\n\n\n---UPDATINT-------',usersData)
+        console.log('\n\n\n---UPDATINT-------', usersData)
         if (usersData?.length > 0) {
-            filteredPayload =  usersData.filter(user => user.role == selectedUserType.name);
-            
+            filteredPayload = usersData.filter(user => user.role == selectedUserType.name);
+
             if (filteredPayload?.length > 0 && searchKey?.length > 0) {
                 return filteredPayload.filter(user => user?.name?.toLocaleLowerCase().includes(searchKey) || user?.email.includes(searchKey))
             }
@@ -116,7 +116,6 @@ const Home = () => {
             <UserList
                 title={selectedUserType?.label} // filter based on applied filter
                 userList={getFilteredData()}
-                onChange={() => { }}
             />
         </View>
 

@@ -6,7 +6,7 @@ type Props = {
     title?: string;
     userTypes: Array<any>;
     selectedId: string
-    onChange: () => {};
+    onChange: (index: number) => void;
 };
 
 const UserType = ({
