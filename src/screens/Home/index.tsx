@@ -77,8 +77,9 @@ const Home = () => {
         setLoading(false);
     }, [])
 
-    const onSelectUserType = (data: any) => {
-        setSelectedUserType(data)
+    const onSelectUserType = (index: number) => {
+        console.log('-----SELECT USER TYPE------', index)
+        setSelectedUserType(userTypes.items[index - 1])
         getFilteredData();
     };
 
@@ -87,13 +88,16 @@ const Home = () => {
     }
 
     const getFilteredData = () => {
+        var filteredPayload: Array<User> | [] = [];
+        console.log('\n\n\n---UPDATINT-------',usersData)
         if (usersData?.length > 0) {
-            const filteredPayload = usersData.filter(user => user.role == selectedUserType.name);
-            if (filteredPayload?.length > 0 && searchKey?.length) {
+            filteredPayload =  usersData.filter(user => user.role == selectedUserType.name);
+            
+            if (filteredPayload?.length > 0 && searchKey?.length > 0) {
                 return filteredPayload.filter(user => user?.name?.toLocaleLowerCase().includes(searchKey) || user?.email.includes(searchKey))
             }
-            return filteredPayload
         }
+        return filteredPayload
     }
 
     if (isLoading) {

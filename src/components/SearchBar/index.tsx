@@ -29,7 +29,7 @@ const SearchBar = ({
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 10,
+        marginVertical: 20,
         paddingHorizontal: 10
     },
     formField: {
