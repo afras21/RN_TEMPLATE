@@ -2,6 +2,11 @@ import { LineSeperator, RadioBox } from '@/components';
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
+const testIdCons = {
+    WRAPPER: 'userType-wrapper',
+    TITLE: 'userType-title',
+}
+
 type Props = {
     title?: string;
     userTypes: Array<any>;
@@ -19,8 +24,8 @@ const UserType = ({
     if (!userTypes?.length) return null
 
     return (
-        <View style={styles.root}>
-            <Text style={styles.titleStyle}>{title}</Text>
+        <View testID={testIdCons.WRAPPER} style={styles.root}>
+            <Text testID={testIdCons.TITLE} style={styles.titleStyle}>{title}</Text>
             <RadioBox onChange={onChange} values={userTypes} selectedId={selectedId} />
             <LineSeperator />
         </View>

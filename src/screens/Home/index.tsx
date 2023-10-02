@@ -73,9 +73,6 @@ const INITIAL_USER_TYPE = {
     id: '', name: '', label: ''
 }
 
-const testIdCons = {
-    LOADER: 'home-screen-activity-indicator'
-}
 
 const Home = () => {
     const [selectedUserType, setSelectedUserType] = useState<UserTypes>(INITIAL_USER_TYPE);
@@ -116,7 +113,7 @@ const Home = () => {
 
 
     if (loading) {
-        return <ActivityIndicator testID={testIdCons.LOADER}/>
+        return <ActivityIndicator/>
     }
 
     return (

@@ -2,6 +2,14 @@ import React from 'react'
 import { Avatar } from '@/components';
 import { View, Text, StyleSheet } from 'react-native'
 
+
+const testIdCons = {
+    WRAPPER: 'usercard-wrapper',
+    TEXT_WRAPPER: 'usercard-text-wrapper',
+    NAME: 'usercard-name',
+    ROLE: 'usercard-role',
+}
+
 /**
  * @todo change item type
  */
@@ -10,23 +18,26 @@ type Props = {
     index: number
 };
 
-const UserList = ({
+const UserCard = ({
     item,
     index
 }: Props) => {
     const { name, role } = item ?? {};
     return (
         <View
+            testID={testIdCons.WRAPPER}
             key={`__user_card__${index}__`}
             style={styles.root}>
             <Avatar title={String(name).charAt(0)} />
-            <View style={styles.textWrapper}>
-                <Text numberOfLines={1} style={styles.nameStyle}>{name}</Text>
-                <Text numberOfLines={1} style={styles.roleStyle}>{role}</Text>
+            <View testID={testIdCons.TEXT_WRAPPER} style={styles.textWrapper}>
+                <Text testID={testIdCons.NAME} numberOfLines={1} style={styles.nameStyle}>{name}</Text>
+                <Text testID={testIdCons.ROLE} numberOfLines={1} style={styles.roleStyle}>{role}</Text>
             </View>
         </View>
     )
 };
+
+export default UserCard;
 const styles = StyleSheet.create({
     root: {
         flexDirection: 'row',
@@ -47,4 +58,3 @@ const styles = StyleSheet.create({
         lineHeight: 25
     }
 })
-export default UserList
