@@ -43,21 +43,9 @@ index 73e12af..13d0ded 100644
    border: {
      justifyContent: 'center',
 diff --git a/node_modules/react-native-radio-buttons-group/lib/RadioGroup.tsx b/node_modules/react-native-radio-buttons-group/lib/RadioGroup.tsx
-index 328b43c..d99c252 100644
+index 328b43c..da1584f 100644
 --- a/node_modules/react-native-radio-buttons-group/lib/RadioGroup.tsx
 +++ b/node_modules/react-native-radio-buttons-group/lib/RadioGroup.tsx
-@@ -6,9 +6,9 @@ import { RadioGroupProps } from './types';
- 
- export default function RadioGroup({ containerStyle, layout = 'column', onPress, radioButtons, selectedId, testID}: RadioGroupProps) {
- 
--  function handlePress(id: string) {
-+  function handlePress(button: any, id: string) {
-     if(id !== selectedId && onPress) {
--      onPress(id);
-+      onPress(button);
-     }
-   }
- 
 @@ -19,7 +19,7 @@ export default function RadioGroup({ containerStyle, layout = 'column', onPress,
            {...button}
            key={button.id}

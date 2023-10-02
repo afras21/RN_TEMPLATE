@@ -102,8 +102,8 @@ const Home = () => {
         setSelectedUserType(userTypes.items[0]);
     }, []);
 
-    const onSelectUserType = (index: number) => {
-        setSelectedUserType(userTypes.items[index - 1])
+    const onSelectUserType = (type: UserTypes) => {
+        setSelectedUserType(type)
         getFilteredData(usersData, selectedUserType, searchKey);
     };
     const onSearchTextChange = useCallback((text: string) => {
@@ -123,7 +123,7 @@ const Home = () => {
             <UserType
                 onChange={onSelectUserType}
                 userTypes={userTypes.items}
-                selectedId={selectedUserType.id}
+                selectedId={selectedUserType?.id}
             />
             <UserList
                 title={selectedUserType?.label} // filter based on applied filter
