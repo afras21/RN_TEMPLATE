@@ -1,8 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     View,
     ActivityIndicator,
     StyleSheet,
+    SafeAreaView,
+    Alert,
 } from 'react-native';
 import { Header } from '../../components';
 import { UserList, UserType } from './components';
@@ -39,6 +41,7 @@ export const listZellerCustomers = {
     nextToken: null
 };
 
+
 export const userTypes = {
     items: [
         {
@@ -66,8 +69,16 @@ type User = {
     role: string
 }
 
+const INITIAL_USER_TYPE = {
+    id: '', name: '', label: ''
+}
+
+const testIdCons = {
+    LOADER: 'home-screen-activity-indicator'
+}
+
 const Home = () => {
-    const [selectedUserType, setSelectedUserType] = useState<UserTypes>({});
+    const [selectedUserType, setSelectedUserType] = useState<UserTypes>(INITIAL_USER_TYPE);
     const [searchKey, setSearchKey] = useState<string>('');
 
     const fetchUsersQuery = gql(`query ExampleQuery($getZellerCustomerId: String!) {
@@ -81,45 +92,35 @@ const Home = () => {
         }
       }`)
     const { loading, error, data } = useQuery(fetchUsersQuery, { variables: { "getZellerCustomerId": "1" } });
-    console.log('---QUER DATA--', data?.listZellerCustomers.items);
+
+    if (error) {
+    }
+
     const usersData = useMemo(() => {
-        return data?.listZellerCustomers?.items
+        const { items = [] } = data?.listZellerCustomers ?? {};
+        return items;
     }, [data])
 
     useEffect(() => {
         setSelectedUserType(userTypes.items[0]);
-        // setUsersData(listZellerCustomers.items);
-
-
     }, []);
 
     const onSelectUserType = (index: number) => {
         setSelectedUserType(userTypes.items[index - 1])
-        getFilteredData();
+        getFilteredData(usersData, selectedUserType, searchKey);
     };
-
-    const onSearchTextChange = (text: string) => {
+    const onSearchTextChange = useCallback((text: string) => {
         setSearchKey(text?.toLocaleLowerCase() ?? '');
-    }
+    }, []);
 
-    const getFilteredData = () => {
-        var filteredPayload: Array<User> | [] = [];
-        if (usersData?.length > 0) {
-            filteredPayload = usersData.filter(user => user.role == selectedUserType.name);
 
-            if (filteredPayload?.length > 0 && searchKey?.length > 0) {
-                return filteredPayload.filter(user => user?.name?.toLocaleLowerCase().includes(searchKey) || user?.email.includes(searchKey))
-            }
-        }
-        return filteredPayload
-    }
 
     if (loading) {
-        return <ActivityIndicator />
+        return <ActivityIndicator testID={testIdCons.LOADER}/>
     }
 
     return (
-        <View>
+        <SafeAreaView>
             <Header title='Dashboard' />
             <SearchBar onChange={onSearchTextChange} />
             <UserType
@@ -129,11 +130,22 @@ const Home = () => {
             />
             <UserList
                 title={selectedUserType?.label} // filter based on applied filter
-                userList={getFilteredData()}
+                userList={getFilteredData(usersData, selectedUserType, searchKey)}
             />
-        </View>
-
+        </SafeAreaView>
     );
 };
+
+const getFilteredData = (usersData: Array<User>, selectedUserType: UserTypes, searchKey: string) => {
+    var filteredPayload: Array<User> | [] = [];
+    if (usersData?.length > 0) {
+        filteredPayload = usersData.filter((user: User) => user.role == selectedUserType.name);
+
+        if (filteredPayload?.length > 0 && searchKey?.length > 0) {
+            return filteredPayload.filter((user: User) => user?.name?.toLocaleLowerCase().includes(searchKey) || user?.email.includes(searchKey))
+        }
+    }
+    return filteredPayload
+}
 
 export default Home;

@@ -1,6 +1,7 @@
 import { Avatar, LineSeperator } from '@/components';
 import React from 'react'
 import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { UserCard } from '.';
 
 type Props = {
     title?: string;
@@ -18,18 +19,6 @@ const UserList = ({
     userList = []
 }: Props) => {
 
-    const renderItem = ({ item, index }: { item: any, index: number }) => (
-        <View
-            key={`__user_card__${index}__`}
-            style={{ flexDirection: 'row', paddingVertical: 10, marginVertical: 5 }}>
-            <Avatar title={String(item?.name).charAt(0)} />
-            <View style={{ marginHorizontal: 15, justifyContent: 'center', width: '70%' }}>
-                <Text numberOfLines={1} style={{ fontSize: 18 }}>{item?.name}</Text>
-                <Text numberOfLines={1} style={{ fontSize: 15, color: '#7d7e80', lineHeight: 25 }}>{item?.role}</Text>
-            </View>
-        </View>
-    )
-
 
     return (
         <View style={styles.root}>
@@ -37,7 +26,7 @@ const UserList = ({
             <FlatList
                 data={userList}
                 keyExtractor={(item, index) => `__${item.id}_userListing_${index}__`}
-                renderItem={renderItem}
+                renderItem={UserCard}
                 ListEmptyComponent={<NoRecordsFound />}
             />
 

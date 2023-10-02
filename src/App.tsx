@@ -12,7 +12,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 const App = () => {
   // Initialize Apollo Client
   const client = new ApolloClient({
-    uri: 'https://3410-2401-4900-1cb8-9bbf-b883-a95d-15ef-44b7.ngrok-free.app', //ngrok URL
+    uri: 'https://0e48-2401-4900-1cb9-bc14-3ca4-6b41-63d7-6019.ngrok-free.app', //ngrok URL
     cache: new InMemoryCache()
   });
 

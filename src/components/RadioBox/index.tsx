@@ -11,7 +11,7 @@ type Props = {
 
 const RadioBox = ({ selectedId, onChange, values }: Props) => {
 
-    const radioButtons = useMemo(() => (values), []);
+    const radioButtons = useMemo(() => (values), [values]);
 
     if (!values?.length) return null;
 
